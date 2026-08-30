@@ -1108,12 +1108,16 @@ async function openWork(id) {
     if (exp.explanation) {
       const isFallback = exp.fallback === true || exp.model_used === "rule-based";
       const badge = isFallback
-        ? `<span class="dash-badge" style="background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3);font-size:10px;margin-left:8px">Rule-based (Gemini quota fallback)</span>`
+        ? `<span class="dash-badge" style="background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3);font-size:10px;margin-left:8px">Rule-based (fallback)</span>`
         : `<span class="dash-badge full" style="font-size:10px;margin-left:8px">Gemini ${exp.model_used || ""}</span>`;
-      const warn = exp.error && isFallback ? `<div class="muted" style="margin-bottom:8px;font-size:12px;color:#f59e0b">Gemini temporarily unavailable — showing deterministic audit reasoning (same logic as pipeline).</div>` : "";
-      box.innerHTML = `${warn}<div style="white-space:pre-wrap;line-height:1.6">${exp.explanation}</div><div style="margin-top:10px;display:flex;gap:6px;align-items:center"><span class="muted" style="font-size:11px">Why flagged? Anomaly=${rec["Is Anomaly"] ?? "—"} · Duplicate=${rec["possible_duplicate_work"] ?? "—"} · Delayed=${rec["is_delayed"] ?? "—"} · Risk ${rec["Risk Level"] ?? "—"}</span>${badge}</div>`;
+      const warn = exp.error && isFallback ? `<div class="muted" style="margin-bottom:8px;font-size:12px;color:#f59e0b">Gemini temporarily unavailable — showing deterministic audit reasoning.</div>` : "";
+      let htmlExp = exp.explanation
+        .replace(/### (.*)/g, '<h4 style="margin:12px 0 6px;color:var(--accent)">$1</h4>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/---/g, '<hr style="border:0;border-top:1px solid rgba(255,255,255,0.1);margin:10px 0">');
+      box.innerHTML = `${warn}<div style="white-space:pre-wrap;line-height:1.6">${htmlExp}</div><div style="margin-top:12px;display:flex;gap:6px;align-items:center"><span class="muted" style="font-size:11px">Why flagged? Anomaly=${rec["Is Anomaly"] ?? "—"} · Duplicate=${rec["possible_duplicate_work"] ?? "—"} · Delayed=${rec["is_delayed"] ?? "—"} · Risk ${rec["Risk Level"] ?? "—"}</span>${badge}</div>`;
     } else if (exp.error) {
-      box.innerHTML = `<span class="explain-loading">Explanation unavailable: ${exp.error}</span>`;
+      box.innerHTML = `<span class="explain-loading" style="color:#ef4444">Explanation unavailable: ${exp.error}</span>`;
     } else {
       box.textContent = "No explanation returned.";
     }
