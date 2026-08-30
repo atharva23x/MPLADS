@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MPLADS Shield — Audit &amp; Risk Intelligence Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="locked">
+  <!-- LOGIN GATE -->
+  <div id="login" class="login">
+    <div class="login-card">
+      <div class="brand login-brand">
+        <svg class="shield" viewBox="0 0 24 24" width="36" height="36" aria-hidden="true">
+          <path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M12 7v10M8.5 11h7M8.5 14.5h7" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" fill="none"/>
+        </svg>
+        <div class="brand-text">
+          <span class="logo">MPLADS Shield</span>
+          <span class="subtitle">Audit &amp; Risk Intelligence Portal</span>
+        </div>
+      </div>
+      <h2 class="login-title">Sign in to your portal</h2>
+      <p class="login-sub">Select a role to access the dashboard. Data scope is enforced by your role — you only see what your mandate allows.</p>
+      <div id="loginGrid" class="login-grid"></div>
+      <p class="login-note">Demo build — authentication is simulated; role-based scope filtering is enforced server-side.</p>
+    </div>
+  </div>
+
+  <!-- APP (hidden until login) -->
+  <div id="app" class="app">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="shield" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+          <path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M12 7v10M8.5 11h7M8.5 14.5h7" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" fill="none"/>
+        </svg>
+        <div class="brand-text">
+          <span class="logo">MPLADS Shield</span>
+          <span class="subtitle">Audit &amp; Risk Intelligence Portal</span>
+        </div>
+      </div>
+      <div class="auth-area">
+        <button id="themeToggle" class="theme-toggle" title="Toggle light/dark" aria-label="Toggle theme">🌙</button>
+        <div class="house-select" id="houseWrap">
+          <label for="house">House</label>
+          <select id="house">
+            <option value="all">All</option>
+            <option value="lok">Lok Sabha</option>
+            <option value="rajya">Rajya Sabha</option>
+          </select>
+        </div>
+        <div id="scopeBadge" class="scope-badge" style="display:none"></div>
+        <button id="logout" class="logout-btn" style="display:none">Logout</button>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-page="overview">📊 Overview</button>
+      <button class="tab tab-detail" data-page="anomalies">⚠️ Anomalies</button>
+      <button class="tab tab-detail" data-page="duplicates">📋 Duplicates</button>
+      <button class="tab tab-detail" data-page="delays">⏱️ Delays</button>
+      <button class="tab" data-page="map">📍 State Map</button>
+      <button class="tab" data-page="analytics">📈 Analytics</button>
+    </nav>
+
+    <main>
+      <!-- OVERVIEW -->
+      <section id="page-overview" class="page active">
+        <div class="hero">
+          <div class="hero-tag">MPLADS — MEMBERS OF PARLIAMENT LOCAL AREA DEVELOPMENT SCHEME</div>
+          <h1 class="hero-title">Public Fund Integrity, Under One Shield</h1>
+          <p class="hero-sub">Continuous monitoring of sanctioned works through Isolation Forest anomaly
+            detection and rule-based compliance scoring — surfacing financial irregularities, duplicate
+            disbursements and schedule overruns before they become losses.</p>
+          <div class="hero-stats">
+            <div><strong id="heroWorks">—</strong><span>Works tracked</span></div>
+            <div><strong id="heroAnom">—</strong><span>Anomalies</span></div>
+            <div><strong id="heroDup">—</strong><span>Duplicates</span></div>
+          </div>
+        </div>
+
+        <div class="section-label">Stakeholder Dashboards</div>
+        <p class="section-sub">Click any dashboard to see exactly what that role can access — scope, projects, alerts and actions are enforced per login</p>
+        <div class="dashboards">
+          <div class="dashboard-card" data-dashboard="mospi" role="button" tabindex="0">
+            <div class="dashboard-icon" style="--g1:#38bdf8;--g2:#6366f1">🏛️</div>
+            <h3>MoSPI (Ministry)</h3>
+            <p>National-level oversight — all states, districts & MPs</p>
+            <span class="dashboard-cta">View details →</span>
+          </div>
+          <div class="dashboard-card" data-dashboard="sna" role="button" tabindex="0">
+            <div class="dashboard-icon" style="--g1:#22c55e;--g2:#0ea5e9">🗺️</div>
+            <h3>State Nodal Authority</h3>
+            <p>State-level monitor — only their state</p>
+            <span class="dashboard-cta">View details →</span>
+          </div>
+          <div class="dashboard-card" data-dashboard="da" role="button" tabindex="0">
+            <div class="dashboard-icon" style="--g1:#f59e0b;--g2:#ef4444">🏢</div>
+            <h3>District Authority</h3>
+            <p>Hand-picked constituencies within one state</p>
+            <span class="dashboard-cta">View details →</span>
+          </div>
+          <div class="dashboard-card" data-dashboard="mp" role="button" tabindex="0">
+            <div class="dashboard-icon" style="--g1:#a78bfa;--g2:#38bdf8">🧑‍💼</div>
+            <h3>MP</h3>
+            <p>Single constituency — their own works</p>
+            <span class="dashboard-cta">View details →</span>
+          </div>
+          <div class="dashboard-card" data-dashboard="public" role="button" tabindex="0">
+            <div class="dashboard-icon" style="--g1:#64748b;--g2:#94a3b8">👁️</div>
+            <h3>Public (Read-Only)</h3>
+            <p>Transparency view — no actions</p>
+            <span class="dashboard-cta">View details →</span>
+          </div>
+        </div>
+
+        <div class="section-label">Programme Overview</div>
+        <p class="section-sub" id="overviewSub">Portfolio-wide risk posture across both Houses of Parliament</p>
+        <div id="summary" class="cards"></div>
+
+        <div class="panels">
+          <div class="panel">
+            <h2>Risk Distribution <span class="muted">(by severity)</span></h2>
+            <div class="chart-box"><canvas id="cRiskOv" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div>
+            <div id="riskOvDist" class="chart-dist"></div>
+          </div>
+          <div class="panel">
+            <h2>Integrity Breakdown <span class="muted">(flagged vs clean)</span></h2>
+            <div class="chart-box"><canvas id="cIntegrity" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div>
+            <div id="integrityDist" class="chart-dist"></div>
+          </div>
+        </div>
+
+        <div class="panel statewise-panel">
+          <h2>State & UT-wise Risk <span class="muted">— All 36 States/UTs Ranked (most → least risk)</span></h2>
+          <div class="table-wrap statewise-wrap">
+            <table id="stateTable">
+              <thead>
+                <tr><th>#</th><th>State / UT</th><th>Works</th><th>Risk Rate %</th><th>High %</th><th>Medium %</th><th>Avg Risk</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANOMALIES -->
+      <section id="page-anomalies" class="page">
+        <div class="panel">
+          <div class="panel-head"><h2>Anomalies</h2>
+            <div class="filters"><input id="anomSearch" type="text" placeholder="Search…" /></div>
+          </div>
+          <div class="table-wrap"><table id="anomTable">
+            <thead><tr><th>Work ID</th><th>Work</th><th>State</th><th>Vendor</th>
+              <th>Sanction (₹)</th><th>Anomaly Score</th><th>Reason</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <div class="pager">
+            <button id="anomPrev" disabled>Prev</button>
+            <span id="anomPage">Page 1</span>
+            <button id="anomNext" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- DUPLICATES -->
+      <section id="page-duplicates" class="page">
+        <div class="panel">
+          <div class="panel-head"><h2>Duplicates</h2>
+            <div class="filters"><input id="dupSearch" type="text" placeholder="Search…" /></div>
+          </div>
+          <div class="table-wrap"><table id="dupTable">
+            <thead><tr><th>Work ID</th><th>Work</th><th>Constituency</th><th>State</th>
+              <th>Vendor</th><th>Sanction (₹)</th><th>Compliance</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <div class="pager">
+            <button id="dupPrev" disabled>Prev</button>
+            <span id="dupPage">Page 1</span>
+            <button id="dupNext" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- DELAYS -->
+      <section id="page-delays" class="page">
+        <div class="panel">
+          <div class="panel-head"><h2>Delays</h2>
+            <div class="filters"><input id="delaySearch" type="text" placeholder="Search…" /></div>
+          </div>
+          <div class="table-wrap"><table id="delayTable">
+            <thead><tr><th>Work ID</th><th>Work</th><th>State</th><th>Vendor</th>
+              <th>Duration (d)</th><th>Delay (d)</th><th>Compliance</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <div class="pager">
+            <button id="delayPrev" disabled>Prev</button>
+            <span id="delayPage">Page 1</span>
+            <button id="delayNext" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATE MAP -->
+      <section id="page-map" class="page">
+        <div class="panel">
+          <div class="panel-head" style="flex-wrap:wrap">
+            <h2 id="mapTitle">State Map</h2>
+            <div class="map-house-toggle" id="mapHouseToggle">
+              <button data-house="all" class="active">All (Lok+Rajya)</button>
+              <button data-house="lok">Lok Sabha</button>
+              <button data-house="rajya">Rajya Sabha</button>
+            </div>
+          </div>
+          <p id="mapSub" class="section-sub" style="margin:-6px 0 12px"></p>
+          <div class="map-layout">
+            <div id="mapView" class="map-view"></div>
+            <div id="mapSide" class="map-side">
+              <div class="map-side-head"><strong>State/UT Ranking</strong><span class="muted">Risk rate % • most → least</span></div>
+              <div id="mapRanking" class="map-ranking"><div class="explain-loading">Loading ranking…</div></div>
+            </div>
+          </div>
+          <div id="mapDetail" class="map-detail hidden"></div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section id="page-analytics" class="page">
+        <div class="charts-grid">
+          <div class="panel chart-card"><h2>Risk Distribution</h2><div class="chart-box"><canvas id="cRisk" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div><div id="riskDist" class="chart-dist"></div></div>
+          <div class="panel chart-card"><h2>Sanction Trend</h2><div class="chart-box"><canvas id="cTrend" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div><div id="trendDist" class="chart-dist"></div></div>
+          <div class="panel chart-card wide"><h2>Flagged Works by State</h2><div class="chart-box"><canvas id="cFlagged" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div><div id="flaggedDist" class="chart-dist"></div></div>
+          <div class="panel chart-card"><h2>Work Status</h2><div class="chart-box"><canvas id="cStatus" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div><div id="statusDist" class="chart-dist"></div></div>
+          <div class="panel chart-card wide"><h2>Sanction Outlay by State</h2><div class="chart-box"><canvas id="cOutlay" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div><div id="outlayDist" class="chart-dist"></div></div>
+          <div class="panel chart-card wide"><h2>Top Vendors</h2><div class="chart-box"><canvas id="cVendors" width="400" height="240" style="display:block;width:100%;height:100%"></canvas></div><div id="vendorsDist" class="chart-dist"></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <button id="modalClose" class="modal-close">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>if(!window.Chart){document.write('<script src="chart.umd.min.js"><\/script>')}</script>
+  <script src="app.js"></script>
+</body>
+</html>
