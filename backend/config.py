@@ -12,10 +12,10 @@ GEOJSON_PATH = os.path.join(DATA_DIR, "geo", "india_states.geojson")
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.6-flash"
 
-HOST = "0.0.0.0"
-PORT = 5000
+PORT = int(os.environ.get("PORT", 5000))
+
 
 # Standardize state names so they join onto the public India GeoJSON (ST_NM)
 STATE_NAME_MAPPING = {
